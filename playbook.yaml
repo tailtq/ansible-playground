@@ -1,0 +1,51 @@
+- name: Play 1
+  hosts:
+    - all_servers
+    # - localhost2
+  vars:
+    - default_server: 127.0.0.1
+  tasks:
+    - name: Ping to servers
+      ping:
+
+    - name: Copy a simple file
+      copy:
+        src: ./simpletext.txt
+        dest: ~/simpletext.txt
+
+    - name: Write a simple file
+      copy:
+        dest: ~/simpletext2.txt
+        content: |
+          line 01
+          localhost {{default_server}}
+    
+    - name: Install Slack
+      snap:
+        name: slack
+        classic: yes
+
+- name: Play 2
+  hosts: all_servers
+  tasks:
+    - command: service httpd status
+      register: command_output  # specify returning value
+
+    - mail:
+        to: Admin <system.admin@company.com>
+        subject: Service Alert
+        body: Service {{ansible_hostname}} is down.
+      # condition using value in stdout attribute
+      when: command_output.stdout.find('down') != -1
+
+- name: Play 3
+  hosts: all_servers
+  tasks:
+    - yum:
+        name: '{{ item }}'
+        state: present
+      with_items:
+        - httpd
+        - binutils
+        - ksh
+        - ...

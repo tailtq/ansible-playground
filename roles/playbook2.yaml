@@ -1,0 +1,2 @@
+- name: Play 1
+  hosts: all_servers

@@ -1,0 +1,3 @@
+# include other playbooks
+- include: roles/playbook1/playbook.yaml
+- include: roles/playbook2.yaml

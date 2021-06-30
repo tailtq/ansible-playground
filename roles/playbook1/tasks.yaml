@@ -1,0 +1,7 @@
+- name: Ping to servers
+  ping:
+
+- name: Install Slack
+  snap:
+    name: slack
+    classic: yes

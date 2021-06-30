@@ -1,0 +1,4 @@
+- name: Play 1
+  hosts: all_servers
+  tasks:
+    - include: tasks.yaml
